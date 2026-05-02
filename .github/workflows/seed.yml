@@ -1,0 +1,28 @@
+name: Seed positive news
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # every 5 minutes
+  workflow_dispatch:       # manual trigger button in GitHub UI
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install seed dependencies
+        run: npm install
+        working-directory: seeds
+
+      - name: Seed positive news into Redis
+        run: node seed-positive-news.mjs
+        working-directory: seeds
+        env:
+          UPSTASH_REDIS_REST_URL:   ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+          OPENROUTER_API_KEY:       ${{ secrets.OPENROUTER_API_KEY }}

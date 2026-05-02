@@ -1,0 +1,17 @@
+{
+  "functions": {
+    "api/bootstrap.ts": { "maxDuration": 10 },
+    "api/feed.ts":      { "maxDuration": 15 },
+    "api/brief.ts":     { "maxDuration": 25 }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin",  "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Low Cortisol News — Today's Good News</title>
+  <meta name="description" content="A real-time positive news dashboard. Science breakthroughs, community wins, environmental progress — curated and uplifting."/>
+  <meta name="theme-color" content="#0a0e17"/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/src/styles/main.css"/>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="logo" aria-label="Low Cortisol News homepage">
+      <span class="logo-icon">☀</span>
+      <span class="logo-text">Low Cortisol News</span>
+    </a>
+    <nav class="tabs" role="tablist" aria-label="News categories">
+      <button data-tab="live"     class="tab-btn active" role="tab" aria-selected="true"  aria-controls="panel-live"     id="tab-live">🌍 Global</button>
+      <button data-tab="pakistan" class="tab-btn"        role="tab" aria-selected="false" aria-controls="panel-pakistan" id="tab-pakistan">🇵🇰 <span class="tab-label-full">Pakistan</span><span class="tab-label-short">PK</span></button>
+      <button data-tab="science"  class="tab-btn"        role="tab" aria-selected="false" aria-controls="panel-science"  id="tab-science">🔬 Science</button>
+      <button data-tab="brief"    class="tab-btn"        role="tab" aria-selected="false" aria-controls="panel-brief"    id="tab-brief">📋 Brief</button>
+    </nav>
+    <div id="health-dot" class="health-dot" title="Feed status: checking…" aria-label="Feed status"></div>
+  </header>
+
+  <main class="main-content">
+    <div id="panel-live" class="panel" role="tabpanel" aria-labelledby="tab-live">
+      <div class="panel-header">
+        <h1>Today's Good News</h1>
+        <span class="panel-subtitle">Positive stories from around the world</span>
+      </div>
+      <div class="panel-content"></div>
+    </div>
+
+    <div id="panel-pakistan" class="panel hidden" role="tabpanel" aria-labelledby="tab-pakistan" aria-hidden="true">
+      <div class="panel-header">
+        <h2>صبح کا اخبار</h2>
+        <span class="panel-subtitle">Pakistan's positive news — Subah ka akhbar</span>
+      </div>
+      <div class="panel-content"></div>
+    </div>
+
+    <div id="panel-science" class="panel hidden" role="tabpanel" aria-labelledby="tab-science" aria-hidden="true">
+      <div class="panel-header">
+        <h2>Science &amp; Discovery</h2>
+        <span class="panel-subtitle">Breakthroughs from MIT, NASA, WHO and beyond</span>
+      </div>
+      <div class="panel-content"></div>
+    </div>
+
+    <div id="panel-brief" class="panel hidden" role="tabpanel" aria-labelledby="tab-brief" aria-hidden="true">
+      <div class="panel-header">
+        <h2>Daily Brief</h2>
+        <span class="panel-subtitle">AI-summmarized highlights — updated every 8 hours</span>
+      </div>
+      <div class="panel-content"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span>Made with ☀️ to lower your cortisol</span>
+    <span class="footer-sep">·</span>
+    <a href="https://github.com/your-org/low-cortisol-news" target="_blank" rel="noopener noreferrer">Source</a>
+  </footer>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
