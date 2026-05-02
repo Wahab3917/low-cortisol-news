@@ -1,4 +1,4 @@
-import type { Story } from '../types.ts';
+import type { Story } from '../types';
 
 interface RawItem {
   title: string;

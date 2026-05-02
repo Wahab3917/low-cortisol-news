@@ -1,9 +1,9 @@
-import { LiveFeedPanel } from './panels/LiveFeedPanel.ts';
-import { PakistanPanel } from './panels/PakistanPanel.ts';
-import { SciencePanel } from './panels/SciencePanel.ts';
-import { DailyBriefPanel } from './panels/DailyBriefPanel.ts';
-import { appBus } from './core/EventBus.ts';
-import type { BootstrapPayload, Story } from './types.ts';
+import { LiveFeedPanel } from './panels/LiveFeedPanel';
+import { PakistanPanel } from './panels/PakistanPanel';
+import { SciencePanel } from './panels/SciencePanel';
+import { DailyBriefPanel } from './panels/DailyBriefPanel';
+import { appBus } from './core/EventBus';
+import type { BootstrapPayload, Story } from './types';
 
 // ────────────────────────────────────────
 // Bootstrap hydration

@@ -1,4 +1,4 @@
-import { getRedis } from './_redis.ts';
+import { getRedis } from './_redis';
 
 export const config = { runtime: 'edge' };
 

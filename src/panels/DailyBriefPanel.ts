@@ -1,5 +1,5 @@
-import { Panel } from '../core/Panel.ts';
-import { SmartPollLoop } from '../core/SmartPollLoop.ts';
+import { Panel } from '../core/Panel';
+import { SmartPollLoop } from '../core/SmartPollLoop';
 
 interface BriefResponse {
   brief: string | null;

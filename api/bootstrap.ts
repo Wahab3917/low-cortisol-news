@@ -1,4 +1,4 @@
-import { getRedis } from './_redis.ts';
+import { getRedis } from './_redis';
 
 const FAST_KEYS = [
   'feed:positive:global',

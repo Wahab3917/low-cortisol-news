@@ -1,8 +1,8 @@
-import { Panel } from '../core/Panel.ts';
-import { SmartPollLoop } from '../core/SmartPollLoop.ts';
-import { appBus } from '../core/EventBus.ts';
-import { FEED_SOURCES } from '../feeds/sources.ts';
-import type { Story } from '../types.ts';
+import { Panel } from '../core/Panel';
+import { SmartPollLoop } from '../core/SmartPollLoop';
+import { appBus } from '../core/EventBus';
+import { FEED_SOURCES } from '../feeds/sources';
+import type { Story } from '../types';
 
 const GLOBAL_SOURCES = FEED_SOURCES.filter(s => s.region === 'global');
 
