@@ -6,7 +6,7 @@ try {
   const envPath = path.resolve(process.cwd(), '../.env'); // if run from seeds folder
   const envPath2 = path.resolve(process.cwd(), '.env'); // if run from code folder
   const actualPath = fs.existsSync(envPath) ? envPath : (fs.existsSync(envPath2) ? envPath2 : null);
-  
+
   if (actualPath) {
     const envFile = fs.readFileSync(actualPath, 'utf8');
     for (const line of envFile.split('\n')) {
@@ -30,7 +30,7 @@ const redis = new Redis({
 });
 
 const OPENROUTER_API = 'https://openrouter.ai/api/v1/chat/completions';
-const FREE_MODEL = 'anthropic/claude-haiku-latest';
+const FREE_MODEL = 'google/gemini-2.5-flash-lite';
 const BRIEF_KEY = 'brief:daily';
 const BRIEF_TTL = 60 * 60 * 8; // 8 hours — only regenerate 3 times per day
 

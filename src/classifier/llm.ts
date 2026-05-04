@@ -1,7 +1,7 @@
 import type { ClassificationResult } from '../types.ts';
 
 const OPENROUTER_API = 'https://openrouter.ai/api/v1/chat/completions';
-const FREE_MODEL = 'anthropic/claude-haiku-latest';
+const FREE_MODEL = 'google/gemini-2.5-flash-lite';
 
 /**
  * Async LLM-based positivity classifier via OpenRouter free model.

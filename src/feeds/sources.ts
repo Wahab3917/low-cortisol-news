@@ -1,28 +1,51 @@
-import type { FeedSource } from '../types.ts';
+import type { FeedSource } from '../types';
 
 export const FEED_SOURCES: FeedSource[] = [
-  // Global positive
+  // ─── GLOBAL POSITIVE (Dedicated) ──────────────────────────────────────────
   { url: 'https://www.positive.news/feed/', name: 'Positive News', category: 'global', region: 'global', tier: 1 },
-  { url: 'https://www.goodnewsnetwork.org/feed/', name: 'Good News Network', category: 'global', region: 'global', tier: 2 },
-  { url: 'https://www.optimistdaily.com/feed/', name: 'Optimist Daily', category: 'global', region: 'global', tier: 2 },
+  { url: 'https://www.goodnewsnetwork.org/feed/', name: 'Good News Network', category: 'global', region: 'global', tier: 1 },
   { url: 'https://reasonstobecheerful.world/feed/', name: 'Reasons to be Cheerful', category: 'global', region: 'global', tier: 2 },
-  { url: 'https://www.yesmagazine.org/rss', name: 'Yes! Magazine', category: 'community', region: 'global', tier: 2 },
-  { url: 'https://greatergood.berkeley.edu/feeds/news', name: 'Greater Good', category: 'community', region: 'global', tier: 2 },
-  { url: 'https://news.un.org/feed/subscribe/en/news/topic/economic-development/feed/rss.xml', name: 'UN Brighter World', category: 'global', region: 'global', tier: 1 },
+  { url: 'https://www.optimistdaily.com/feed/', name: 'Optimist Daily', category: 'global', region: 'global', tier: 2 },
+  { url: 'https://www.goodgoodgood.co/articles/rss.xml', name: 'Good Good Good', category: 'global', region: 'global', tier: 2 },
 
-  // Science & discovery
-  { url: 'https://news.mit.edu/rss/research', name: 'MIT News', category: 'science', region: 'global', tier: 1 },
+  // ─── AUTHORITATIVE GLOBAL (High-volume filtering) ─────────────────────────
+  { url: 'https://news.google.com/rss/search?q=site:reuters.com+world&hl=en-US&gl=US&ceid=US:en', name: 'Reuters World', category: 'global', region: 'global', tier: 1 },
+  { url: 'https://news.google.com/rss/search?q=site:apnews.com&hl=en-US&gl=US&ceid=US:en', name: 'AP News', category: 'global', region: 'global', tier: 1 },
+  { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC World', category: 'global', region: 'global', tier: 1 },
+  { url: 'https://www.theguardian.com/world/rss', name: 'Guardian World', category: 'global', region: 'global', tier: 2 },
+  { url: 'https://www.aljazeera.com/xml/rss/all.xml', name: 'Al Jazeera', category: 'global', region: 'global', tier: 2 },
+  { url: 'https://www.euronews.com/rss?format=xml', name: 'EuroNews', category: 'global', region: 'global', tier: 2 },
+  { url: 'https://www.france24.com/en/rss', name: 'France 24', category: 'global', region: 'global', tier: 2 },
+  { url: 'https://www.dw.com/en/rss-en-all/s-9099', name: 'DW News', category: 'global', region: 'global', tier: 2 },
+
+  // ─── SCIENCE & DISCOVERY ──────────────────────────────────────────────────
+  { url: 'https://news.mit.edu/rss/research', name: 'MIT Research', category: 'science', region: 'global', tier: 1 },
   { url: 'https://www.nasa.gov/rss/dyn/breaking_news.rss', name: 'NASA News', category: 'science', region: 'global', tier: 1 },
-  { url: 'https://www.who.int/rss-feeds/news-english.xml', name: 'WHO News', category: 'science', region: 'global', tier: 1 },
-  { url: 'https://www.sciencedaily.com/rss/top/science.xml', name: 'Science Daily', category: 'science', region: 'global', tier: 2 },
+  { url: 'https://www.sciencedaily.com/rss/all.xml', name: 'Science Daily', category: 'science', region: 'global', tier: 2 },
+  { url: 'https://feeds.nature.com/nature/rss/current', name: 'Nature News', category: 'science', region: 'global', tier: 1 },
+  { url: 'https://www.livescience.com/feeds.xml', name: 'Live Science', category: 'science', region: 'global', tier: 2 },
   { url: 'https://www.newscientist.com/feed/home/', name: 'New Scientist', category: 'science', region: 'global', tier: 2 },
+  { url: 'https://singularityhub.com/feed/', name: 'Singularity Hub', category: 'science', region: 'global', tier: 2 },
+  { url: 'https://humanprogress.org/feed/', name: 'Human Progress', category: 'science', region: 'global', tier: 2 },
 
-  // Environment & conservation
+  // ─── ENVIRONMENT & EARTH ──────────────────────────────────────────────────
   { url: 'https://www.worldwildlife.org/stories.rss', name: 'WWF Stories', category: 'environment', region: 'global', tier: 1 },
   { url: 'https://www.mongabay.com/feed/', name: 'Mongabay', category: 'environment', region: 'global', tier: 2 },
+  { url: 'https://conservationoptimism.org/feed/', name: 'Conservation Optimism', category: 'environment', region: 'global', tier: 2 },
   { url: 'https://ourworldindata.org/atom.xml', name: 'Our World in Data', category: 'science', region: 'global', tier: 1 },
 
-  // Pakistan region
+  // ─── INNOVATION & TECH ───────────────────────────────────────────────────
+  { url: 'https://techcrunch.com/feed/', name: 'TechCrunch', category: 'innovation', region: 'global', tier: 2 },
+  { url: 'https://www.theverge.com/rss/index.xml', name: 'The Verge', category: 'innovation', region: 'global', tier: 2 },
+  { url: 'https://feeds.arstechnica.com/arstechnica/technology-lab', name: 'Ars Technica', category: 'innovation', region: 'global', tier: 2 },
+  { url: 'https://hnrss.org/frontpage', name: 'Hacker News', category: 'innovation', region: 'global', tier: 2 },
+
+  // ─── COMMUNITY & IMPACT ───────────────────────────────────────────────────
+  { url: 'https://www.yesmagazine.org/feed', name: 'Yes! Magazine', category: 'community', region: 'global', tier: 2 },
+  { url: 'https://greatergood.berkeley.edu/site/rss/articles', name: 'Greater Good', category: 'community', region: 'global', tier: 2 },
+  { url: 'https://www.shareable.net/feed/', name: 'Shareable', category: 'community', region: 'global', tier: 2 },
+
+  // ─── PAKISTAN ─────────────────────────────────────────────────────────────
   { url: 'https://www.dawn.com/feeds/home', name: 'Dawn', category: 'global', region: 'pakistan', tier: 1 },
   { url: 'https://www.thenews.com.pk/rss/1/7', name: 'The News', category: 'global', region: 'pakistan', tier: 1 },
   { url: 'https://tribune.com.pk/feed/home', name: 'Express Tribune', category: 'global', region: 'pakistan', tier: 1 },
