@@ -3,12 +3,10 @@ import fs from 'fs';
 import path from 'path';
 
 try {
-  const envPath = path.resolve(process.cwd(), '../.env'); // if run from seeds folder
-  const envPath2 = path.resolve(process.cwd(), '.env'); // if run from code folder
-  const actualPath = fs.existsSync(envPath) ? envPath : (fs.existsSync(envPath2) ? envPath2 : null);
+  const envPath = path.resolve(process.cwd(), '.env');
 
-  if (actualPath) {
-    const envFile = fs.readFileSync(actualPath, 'utf8');
+  if (envPath) {
+    const envFile = fs.readFileSync(envPath, 'utf8');
     for (const line of envFile.split('\n')) {
       const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
       if (match) {
@@ -88,7 +86,7 @@ Write the daily brief paragraph:`;
     const brief = data.choices?.[0]?.message?.content?.trim();
     if (brief) {
       await redis.set(BRIEF_KEY, brief, { ex: BRIEF_TTL });
-      console.log('✅ Daily brief seeded:', brief.slice(0, 80) + '…');
+      console.log('Daily brief seeded:', brief.slice(0, 80) + '…');
     } else {
       console.error('LLM returned empty response');
       await redis.set(BRIEF_KEY, '__NEG__', { ex: 300 });

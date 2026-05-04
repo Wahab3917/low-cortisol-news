@@ -30,7 +30,7 @@ export default async function handler(req: Request): Promise<Response> {
 
   try {
     const redis = getRedis();
-    const results = await redis.mget<string[]>(...keys);
+    const results = await redis.mget<(string | null)[]>(...keys);
 
     const payload: Record<string, unknown> = {};
     keys.forEach((key, i) => {

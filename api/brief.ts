@@ -1,6 +1,7 @@
 import { getRedis } from './_redis';
 
 export const config = { runtime: 'edge' };
+declare const process: { env: Record<string, string | undefined> };
 
 const OPENROUTER_API = 'https://openrouter.ai/api/v1/chat/completions';
 const FREE_MODEL = 'google/gemini-2.5-flash-lite';
@@ -14,7 +15,7 @@ export default async function handler(req: Request): Promise<Response> {
 
   const headers = { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' };
 
-  // Check Redis cache first — brief is expensive (LLM call)
+  // Check Redis cache first
   try {
     const redis = getRedis();
     const cached = await redis.get<string>(BRIEF_KEY);

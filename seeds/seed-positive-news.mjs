@@ -2,14 +2,11 @@ import { Redis } from '@upstash/redis';
 import fs from 'fs';
 import path from 'path';
 
-// Minimal manually loaded .env file (to avoid requiring 'dotenv' module if run locally)
 try {
-  const envPath = path.resolve(process.cwd(), '../.env'); // if run from seeds folder
-  const envPath2 = path.resolve(process.cwd(), '.env'); // if run from code folder
-  const actualPath = fs.existsSync(envPath) ? envPath : (fs.existsSync(envPath2) ? envPath2 : null);
-  
-  if (actualPath) {
-    const envFile = fs.readFileSync(actualPath, 'utf8');
+  const envPath = path.resolve(process.cwd(), '.env');
+
+  if (envPath) {
+    const envFile = fs.readFileSync(envPath, 'utf8');
     for (const line of envFile.split('\n')) {
       const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
       if (match) {
@@ -59,24 +56,48 @@ function passesKeywordFilter(text) {
 }
 
 const FEEDS = [
-  { url: 'https://www.positive.news/feed/', name: 'Positive News', region: 'global', category: 'general' },
-  { url: 'https://www.goodnewsnetwork.org/feed/', name: 'Good News Network', region: 'global', category: 'general' },
-  { url: 'https://www.optimistdaily.com/feed/', name: 'Optimist Daily', region: 'global', category: 'general' },
-  { url: 'https://reasonstobecheerful.world/feed/', name: 'Reasons to be Cheerful', region: 'global', category: 'general' },
-  { url: 'https://www.yesmagazine.org/rss', name: 'Yes! Magazine', region: 'global', category: 'community' },
-  { url: 'https://greatergood.berkeley.edu/feeds/news', name: 'Greater Good', region: 'global', category: 'community' },
-  { url: 'https://news.un.org/feed/subscribe/en/news/topic/economic-development/feed/rss.xml', name: 'UN Brighter World', region: 'global', category: 'general' },
-  { url: 'https://news.mit.edu/rss/research', name: 'MIT News', region: 'global', category: 'science' },
+  // ─── GLOBAL POSITIVE (Dedicated) ──────────────────────────────────────────
+  { url: 'https://www.positive.news/feed/', name: 'Positive News', region: 'global', category: 'global' },
+  { url: 'https://www.goodnewsnetwork.org/feed/', name: 'Good News Network', region: 'global', category: 'global' },
+  { url: 'https://reasonstobecheerful.world/feed/', name: 'Reasons to be Cheerful', region: 'global', category: 'global' },
+  { url: 'https://www.optimistdaily.com/feed/', name: 'Optimist Daily', region: 'global', category: 'global' },
+  { url: 'https://www.goodgoodgood.co/articles/rss.xml', name: 'Good Good Good', region: 'global', category: 'global' },
+
+  // ─── AUTHORITATIVE GLOBAL (Seed-only) ──────────────────────────────────────
+  { url: 'https://news.google.com/rss/search?q=site:reuters.com+world&hl=en-US&gl=US&ceid=US:en', name: 'Reuters World', region: 'global', category: 'global' },
+  { url: 'https://news.google.com/rss/search?q=site:apnews.com&hl=en-US&gl=US&ceid=US:en', name: 'AP News', region: 'global', category: 'global' },
+  { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC World', region: 'global', category: 'global' },
+  { url: 'https://www.theguardian.com/world/rss', name: 'Guardian World', region: 'global', category: 'global' },
+  { url: 'https://www.aljazeera.com/xml/rss/all.xml', name: 'Al Jazeera', region: 'global', category: 'global' },
+  { url: 'https://www.euronews.com/rss?format=xml', name: 'EuroNews', region: 'global', category: 'global' },
+  { url: 'https://www.france24.com/en/rss', name: 'France 24', region: 'global', category: 'global' },
+  { url: 'https://www.dw.com/en/rss-en-all/s-9099', name: 'DW News', region: 'global', category: 'global' },
+
+  // ─── SCIENCE & DISCOVERY ──────────────────────────────────────────────────
+  { url: 'https://news.mit.edu/rss/research', name: 'MIT Research', region: 'global', category: 'science' },
   { url: 'https://www.nasa.gov/rss/dyn/breaking_news.rss', name: 'NASA News', region: 'global', category: 'science' },
-  { url: 'https://www.who.int/rss-feeds/news-english.xml', name: 'WHO News', region: 'global', category: 'science' },
-  { url: 'https://www.sciencedaily.com/rss/top/science.xml', name: 'Science Daily', region: 'global', category: 'science' },
+  { url: 'https://www.sciencedaily.com/rss/all.xml', name: 'Science Daily', region: 'global', category: 'science' },
+  { url: 'https://feeds.nature.com/nature/rss/current', name: 'Nature News', region: 'global', category: 'science' },
+  { url: 'https://www.livescience.com/feeds.xml', name: 'Live Science', region: 'global', category: 'science' },
   { url: 'https://www.newscientist.com/feed/home/', name: 'New Scientist', region: 'global', category: 'science' },
+  { url: 'https://singularityhub.com/feed/', name: 'Singularity Hub', region: 'global', category: 'science' },
+  { url: 'https://humanprogress.org/feed/', name: 'Human Progress', region: 'global', category: 'science' },
+
+  // ─── ENVIRONMENT & EARTH ──────────────────────────────────────────────────
   { url: 'https://www.worldwildlife.org/stories.rss', name: 'WWF Stories', region: 'global', category: 'environment' },
   { url: 'https://www.mongabay.com/feed/', name: 'Mongabay', region: 'global', category: 'environment' },
+  { url: 'https://conservationoptimism.org/feed/', name: 'Conservation Optimism', region: 'global', category: 'environment' },
   { url: 'https://ourworldindata.org/atom.xml', name: 'Our World in Data', region: 'global', category: 'science' },
-  { url: 'https://www.dawn.com/feeds/home', name: 'Dawn', region: 'pakistan', category: 'general' },
-  { url: 'https://www.thenews.com.pk/rss/1/7', name: 'The News', region: 'pakistan', category: 'general' },
-  { url: 'https://tribune.com.pk/feed/home', name: 'Express Tribune', region: 'pakistan', category: 'general' },
+
+  // ─── COMMUNITY & IMPACT ───────────────────────────────────────────────────
+  { url: 'https://www.yesmagazine.org/feed', name: 'Yes! Magazine', region: 'global', category: 'community' },
+  { url: 'https://greatergood.berkeley.edu/site/rss/articles', name: 'Greater Good', region: 'global', category: 'community' },
+  { url: 'https://www.shareable.net/feed/', name: 'Shareable', region: 'global', category: 'community' },
+
+  // ─── PAKISTAN ─────────────────────────────────────────────────────────────
+  { url: 'https://www.dawn.com/feeds/home', name: 'Dawn', region: 'pakistan', category: 'global' },
+  { url: 'https://www.thenews.com.pk/rss/1/7', name: 'The News', region: 'pakistan', category: 'global' },
+  { url: 'https://tribune.com.pk/feed/home', name: 'Express Tribune', region: 'pakistan', category: 'global' },
   { url: 'https://propakistani.pk/feed/', name: 'ProPakistani', region: 'pakistan', category: 'innovation' },
   { url: 'https://pakwired.com/feed/', name: 'PakWired', region: 'pakistan', category: 'innovation' },
 ];
@@ -88,7 +109,7 @@ async function fetchFeed(feedMeta) {
       signal: AbortSignal.timeout(10000),
     });
     const xml = await res.text();
-    
+
     const itemRegex = /<item[\s\S]*?<\/item>|<entry[\s\S]*?<\/entry>/gi;
     const tagRegex = (tag) => new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, 'i');
     const hrefRegex = /<link[^>]+href=["']([^"']+)["']/i;
@@ -158,7 +179,7 @@ function djb2(str) {
 }
 
 async function run() {
-  console.log('🌅 Low Cortisol News — seeding started');
+  console.log('Low Cortisol News: seeding started');
   const results = await Promise.allSettled(FEEDS.map(fetchFeed));
   const allStories = [];
   for (const r of results) {
@@ -194,7 +215,7 @@ async function run() {
     redis.set('seed:last_run', new Date().toISOString(), { ex: 3600 }),
   ]);
 
-  console.log(`✅ Seeded: ${global.length} global, ${pakistan.length} pakistan, ${science.length} science, ${environment.length} environment, ${community.length} community, ${innovation.length} innovation`);
+  console.log(`Seeded: ${global.length} global, ${pakistan.length} pakistan, ${science.length} science, ${environment.length} environment, ${community.length} community, ${innovation.length} innovation`);
 }
 
 run().catch(e => {

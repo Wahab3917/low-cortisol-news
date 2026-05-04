@@ -1,10 +1,10 @@
 import { Panel } from '../core/Panel';
 import { SmartPollLoop } from '../core/SmartPollLoop';
 import { appBus } from '../core/EventBus';
-import { FEED_SOURCES } from '../feeds/sources';
-import type { Story } from '../types';
+import { getFeedsByRegion } from '../feeds/sources';
+import type { Story } from '../../lib/types';
 
-const GLOBAL_SOURCES = FEED_SOURCES.filter(s => s.region === 'global');
+const GLOBAL_SOURCES = getFeedsByRegion('global', true);
 
 function storyCard(s: Story): string {
   const timeAgo = formatTimeAgo(s.pubDate);
@@ -52,6 +52,10 @@ export class LiveFeedPanel extends Panel {
     });
   }
 
+  private visibilityHandler = (): void => {
+    if (!document.hidden) this.poller.triggerNow();
+  };
+
   async render(): Promise<void> {
     if (this.stories.length === 0) {
       this.setContent(loadingHtml());
@@ -62,9 +66,7 @@ export class LiveFeedPanel extends Panel {
     this.poller.start();
 
     // Resume on visibility change
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) this.poller.triggerNow();
-    });
+    document.addEventListener('visibilitychange', this.visibilityHandler);
   }
 
   private async fetchFeeds(): Promise<void> {
@@ -130,6 +132,7 @@ export class LiveFeedPanel extends Panel {
   destroy(): void {
     super.destroy();
     this.poller.stop();
+    document.removeEventListener('visibilitychange', this.visibilityHandler);
   }
 }
 

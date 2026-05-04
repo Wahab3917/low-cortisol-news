@@ -24,12 +24,14 @@ export class DailyBriefPanel extends Panel {
     });
   }
 
+  private visibilityHandler = (): void => {
+    if (!document.hidden && !this.brief) this.poller.triggerNow();
+  };
+
   async render(): Promise<void> {
     this.renderBrief();
     this.poller.start();
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden && !this.brief) this.poller.triggerNow();
-    });
+    document.addEventListener('visibilitychange', this.visibilityHandler);
   }
 
   private async fetchBrief(): Promise<void> {
@@ -93,6 +95,7 @@ export class DailyBriefPanel extends Panel {
   destroy(): void {
     super.destroy();
     this.poller.stop();
+    document.removeEventListener('visibilitychange', this.visibilityHandler);
   }
 }
 

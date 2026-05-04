@@ -1,6 +1,6 @@
 import { getRedis } from './_redis';
-import { passesKeywordFilter } from '../src/classifier/keywords';
-import type { Story } from '../src/types';
+import { passesKeywordFilter } from '../lib/keywords';
+import type { Story } from '../lib/types';
 
 export const config = { runtime: 'edge' };
 

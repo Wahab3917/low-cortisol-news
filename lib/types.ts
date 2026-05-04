@@ -18,6 +18,7 @@ export interface FeedSource {
   category: 'global' | 'science' | 'environment' | 'community' | 'innovation';
   region: 'global' | 'pakistan';
   tier: 1 | 2 | 3; // 1=wire/authoritative, 2=major, 3=aggregator
+  isLive?: boolean; // if true, the frontend can poll this feed directly via api/feed proxy
 }
 
 export interface ClassificationResult {

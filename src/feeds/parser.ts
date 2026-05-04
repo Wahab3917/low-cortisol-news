@@ -1,4 +1,4 @@
-import type { Story } from '../types';
+import type { Story } from '../../lib/types';
 
 interface RawItem {
   title: string;

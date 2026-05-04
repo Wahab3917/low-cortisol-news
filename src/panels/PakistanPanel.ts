@@ -1,9 +1,9 @@
 import { Panel } from '../core/Panel';
 import { SmartPollLoop } from '../core/SmartPollLoop';
-import { FEED_SOURCES } from '../feeds/sources';
-import type { Story } from '../types';
+import { getFeedsByRegion } from '../feeds/sources';
+import type { Story } from '../../lib/types';
 
-const PAK_SOURCES = FEED_SOURCES.filter(s => s.region === 'pakistan');
+const PAK_SOURCES = getFeedsByRegion('pakistan', true);
 
 function storyCard(s: Story): string {
   const timeAgo = formatTimeAgo(s.pubDate);
@@ -37,12 +37,14 @@ export class PakistanPanel extends Panel {
     });
   }
 
+  private visibilityHandler = (): void => {
+    if (!document.hidden) this.poller.triggerNow();
+  };
+
   async render(): Promise<void> {
     this.renderStories();
     this.poller.start();
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) this.poller.triggerNow();
-    });
+    document.addEventListener('visibilitychange', this.visibilityHandler);
   }
 
   private async fetchFeeds(): Promise<void> {
@@ -92,6 +94,7 @@ export class PakistanPanel extends Panel {
   destroy(): void {
     super.destroy();
     this.poller.stop();
+    document.removeEventListener('visibilitychange', this.visibilityHandler);
   }
 }
 

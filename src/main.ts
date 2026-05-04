@@ -3,7 +3,7 @@ import { PakistanPanel } from './panels/PakistanPanel';
 import { SciencePanel } from './panels/SciencePanel';
 import { DailyBriefPanel } from './panels/DailyBriefPanel';
 import { appBus } from './core/EventBus';
-import type { BootstrapPayload, Story } from './types';
+import type { BootstrapPayload, Story } from '../lib/types';
 
 // ────────────────────────────────────────
 // Bootstrap hydration
@@ -120,11 +120,11 @@ function openIDB(): Promise<IDBDatabase> {
 }
 
 // ────────────────────────────────────────
-// Save feed data to IDB when it updates
+// Save feed data to IDB when it updates [TODO]
 // ────────────────────────────────────────
 function setupIDBPersistence(): void {
   appBus.on('feed:updated', ({ key, count }) => {
-    if (count > 0) saveToIDB(key, count).catch(() => {});
+    if (count > 0) saveToIDB(key, count).catch(() => { });
   });
 }
 
@@ -141,15 +141,15 @@ async function init(): Promise<void> {
   await bootstrap();
 
   const liveData = getHydratedData('feed:positive:global') as Story[] | null;
-  const pakData  = getHydratedData('feed:positive:pakistan') as Story[] | null;
-  const sciData  = getHydratedData('feed:science') as Story[] | null;
+  const pakData = getHydratedData('feed:positive:pakistan') as Story[] | null;
+  const sciData = getHydratedData('feed:science') as Story[] | null;
   const briefData = getHydratedData('brief:daily') as string | null;
 
   // Mount panels — always render even if hydration is empty
-  const livePanel  = new LiveFeedPanel('panel-live',     liveData ?? undefined);
-  const pakPanel   = new PakistanPanel('panel-pakistan', pakData  ?? undefined);
-  const sciPanel   = new SciencePanel('panel-science',   sciData  ?? undefined);
-  const briefPanel = new DailyBriefPanel('panel-brief',  briefData ?? undefined);
+  const livePanel = new LiveFeedPanel('panel-live', liveData ?? undefined);
+  const pakPanel = new PakistanPanel('panel-pakistan', pakData ?? undefined);
+  const sciPanel = new SciencePanel('panel-science', sciData ?? undefined);
+  const briefPanel = new DailyBriefPanel('panel-brief', briefData ?? undefined);
 
   await Promise.all([
     livePanel.render(),

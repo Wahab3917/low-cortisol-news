@@ -1,4 +1,6 @@
-import type { ClassificationResult } from '../types.ts';
+import type { ClassificationResult } from '../../lib/types';
+
+declare const process: { env: Record<string, string | undefined> };
 
 const OPENROUTER_API = 'https://openrouter.ai/api/v1/chat/completions';
 const FREE_MODEL = 'google/gemini-2.5-flash-lite';

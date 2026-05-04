@@ -1,9 +1,9 @@
 interface PollOptions {
   intervalMs: number;
   callback: () => Promise<void>;
-  backoffMultiplier?: number; // default 2
-  maxBackoff?: number;        // default 4x base interval
-  hiddenMultiplier?: number;  // default 5
+  backoffMultiplier?: number;     // base for exponential backoff (default 2)
+  maxBackoffMultiplier?: number;  // cap for the multiplier (default 4x base interval)
+  hiddenMultiplier?: number;      // default 5
 }
 
 export class SmartPollLoop {
@@ -43,7 +43,7 @@ export class SmartPollLoop {
     const base = this.options.intervalMs;
     const backoff = Math.min(
       Math.pow(this.options.backoffMultiplier ?? 2, this.failures),
-      this.options.maxBackoff ?? 4
+      this.options.maxBackoffMultiplier ?? 4
     );
     const hidden = document.hidden ? (this.options.hiddenMultiplier ?? 5) : 1;
     const jitter = 0.9 + Math.random() * 0.2; // ±10%
