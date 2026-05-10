@@ -66,17 +66,22 @@ export class PakistanPanel extends Panel {
   private mergeStories(incoming: Story[]): void {
     const existing = new Set(this.stories.map(s => s.link));
     const fresh = incoming.filter(s => !existing.has(s.link));
+
+    // Recency filter: Today or Yesterday
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const yesterdayStart = todayStart - (24 * 60 * 60 * 1000);
+
     this.stories = [...fresh, ...this.stories]
+      .filter(s => new Date(s.pubDate).getTime() >= yesterdayStart)
       .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
-      .slice(0, 40);
+      .slice(0, 12);
   }
 
   private renderStories(): void {
     if (this.stories.length === 0) {
       this.setContent(`<div class="panel-empty">
-        <span class="empty-icon">🌅</span>
-        <p>Subah ka akhbar aa raha hai — achbar dhoond rahe hain…</p>
-        <p class="panel-empty-sub">Loading Pakistan's positive news…</p>
+        <p class="panel-empty-sub">Loading…</p>
       </div>`);
       return;
     }

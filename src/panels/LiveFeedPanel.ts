@@ -1,10 +1,15 @@
 import { Panel } from '../core/Panel';
 import { SmartPollLoop } from '../core/SmartPollLoop';
 import { appBus } from '../core/EventBus';
-import { getFeedsByRegion } from '../feeds/sources';
+import { getFeedsByRegion, getFeedsByCategory } from '../feeds/sources';
 import type { Story } from '../../lib/types';
 
-const GLOBAL_SOURCES = getFeedsByRegion('global', true);
+// Mixed sources for the main dashboard
+const DASHBOARD_SOURCES = [
+  ...getFeedsByRegion('global', true),
+  ...getFeedsByCategory('science', true),
+  ...getFeedsByCategory('environment', true)
+];
 
 function storyCard(s: Story): string {
   const timeAgo = formatTimeAgo(s.pubDate);
@@ -24,8 +29,8 @@ function storyCard(s: Story): string {
 }
 
 function loadingHtml(): string {
-  return `<div class="panel-loading">
-    ${Array(12).fill('<div class="skeleton-card"><div class="skeleton-line sk-image"></div><div class="sk-content"><div class="skeleton-line sk-title"></div><div class="skeleton-line sk-body"></div></div></div>').join('')}
+  return `<div class="panel-loading" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
+    ${Array(6).fill('<div class="skeleton-card"><div class="skeleton-line sk-image"></div><div class="sk-content"><div class="skeleton-line sk-title"></div><div class="skeleton-line sk-body"></div></div></div>').join('')}
   </div>`;
 }
 
@@ -70,9 +75,9 @@ export class LiveFeedPanel extends Panel {
   }
 
   private async fetchFeeds(): Promise<void> {
-    const toFetch = GLOBAL_SOURCES.filter(s => !this.fetchedSources.has(s.url));
+    const toFetch = DASHBOARD_SOURCES.filter(s => !this.fetchedSources.has(s.url));
     if (toFetch.length === 0) {
-      this.fetchedSources.clear(); // cycle through again
+      this.fetchedSources.clear(); 
       return;
     }
 
@@ -103,13 +108,21 @@ export class LiveFeedPanel extends Panel {
   private mergeStories(incoming: Story[]): void {
     const existingLinks = new Set(this.stories.map(s => s.link));
     const existingTitles = new Set(this.stories.map(s => s.title.toLowerCase().slice(0, 60)));
+    
     const fresh = incoming.filter(s =>
       !existingLinks.has(s.link) &&
       !existingTitles.has(s.title.toLowerCase().slice(0, 60))
     );
+
+    // Recency filter: Today or Yesterday
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const yesterdayStart = todayStart - (24 * 60 * 60 * 1000);
+
     this.stories = [...fresh, ...this.stories]
+      .filter(s => new Date(s.pubDate).getTime() >= yesterdayStart)
       .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
-      .slice(0, 60);
+      .slice(0, 12); // Limit to 12 as requested
   }
 
   private renderStories(): void {
@@ -117,7 +130,7 @@ export class LiveFeedPanel extends Panel {
       this.setContent(emptyHtml());
       return;
     }
-    this.setContent(`<div class="story-list">${this.stories.map(storyCard).join('')}</div>`);
+    this.setContent(`<div class="story-list" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">${this.stories.map(storyCard).join('')}</div>`);
   }
 
   // Event delegation — never attach listeners inside innerHTML

@@ -142,20 +142,14 @@ async function init(): Promise<void> {
 
   const liveData = getHydratedData('feed:positive:global') as Story[] | null;
   const pakData = getHydratedData('feed:positive:pakistan') as Story[] | null;
-  const sciData = getHydratedData('feed:science') as Story[] | null;
-  const briefData = getHydratedData('brief:daily') as string | null;
 
-  // Mount panels — always render even if hydration is empty
+  // Mount panels — only Live/Dashboard and Pakistan remain
   const livePanel = new LiveFeedPanel('panel-live', liveData ?? undefined);
   const pakPanel = new PakistanPanel('panel-pakistan', pakData ?? undefined);
-  const sciPanel = new SciencePanel('panel-science', sciData ?? undefined);
-  const briefPanel = new DailyBriefPanel('panel-brief', briefData ?? undefined);
 
   await Promise.all([
     livePanel.render(),
     pakPanel.render(),
-    sciPanel.render(),
-    briefPanel.render(),
   ]);
 
   // Signal initial health state

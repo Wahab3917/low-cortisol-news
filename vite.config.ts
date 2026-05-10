@@ -14,7 +14,7 @@ export default defineConfig({
       // Proxy /api/* to Vercel dev (run `vercel dev` on port 3001 separately)
       // or point to your deployed Vercel URL during local development
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'https://low-cortisol-news.vercel.app',
         changeOrigin: true,
       },
     },
