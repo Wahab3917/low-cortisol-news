@@ -9,14 +9,11 @@ export const ALL_SOURCES: FeedSource[] = [
   { url: 'https://www.goodgoodgood.co/articles/rss.xml', name: 'Good Good Good', category: 'global', region: 'global', tier: 2, isLive: true },
 
   // ─── AUTHORITATIVE GLOBAL (Seed-only, high volume) ─────────────────────────
-  { url: 'https://news.google.com/rss/search?q=site:reuters.com+world&hl=en-US&gl=US&ceid=US:en', name: 'Reuters World', category: 'global', region: 'global', tier: 1, isLive: false },
-  { url: 'https://news.google.com/rss/search?q=site:apnews.com&hl=en-US&gl=US&ceid=US:en', name: 'AP News', category: 'global', region: 'global', tier: 1, isLive: false },
   { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC World', category: 'global', region: 'global', tier: 1, isLive: false },
   { url: 'https://www.theguardian.com/world/rss', name: 'Guardian World', category: 'global', region: 'global', tier: 2, isLive: false },
   { url: 'https://www.aljazeera.com/xml/rss/all.xml', name: 'Al Jazeera', category: 'global', region: 'global', tier: 2, isLive: false },
   { url: 'https://www.euronews.com/rss?format=xml', name: 'EuroNews', category: 'global', region: 'global', tier: 2, isLive: false },
   { url: 'https://www.france24.com/en/rss', name: 'France 24', category: 'global', region: 'global', tier: 2, isLive: false },
-  { url: 'https://www.dw.com/en/rss-en-all/s-9099', name: 'DW News', category: 'global', region: 'global', tier: 2, isLive: false },
 
   // ─── SCIENCE & DISCOVERY ──────────────────────────────────────────────────
   { url: 'https://news.mit.edu/rss/research', name: 'MIT Research', category: 'science', region: 'global', tier: 1, isLive: true },
@@ -29,16 +26,18 @@ export const ALL_SOURCES: FeedSource[] = [
   { url: 'https://humanprogress.org/feed/', name: 'Human Progress', category: 'science', region: 'global', tier: 2, isLive: true },
 
   // ─── ENVIRONMENT & EARTH ──────────────────────────────────────────────────
-  { url: 'https://www.worldwildlife.org/stories.rss', name: 'WWF Stories', category: 'environment', region: 'global', tier: 1, isLive: true },
-  { url: 'https://www.mongabay.com/feed/', name: 'Mongabay', category: 'environment', region: 'global', tier: 2, isLive: false },
+  { url: 'https://www.goodnewsnetwork.org/category/news/earth/feed/', name: 'GNN Earth', category: 'environment', region: 'global', tier: 1, isLive: true },
+  { url: 'https://www.optimistdaily.com/category/environment/feed/', name: 'Optimist Environment', category: 'environment', region: 'global', tier: 2, isLive: true },
   { url: 'https://conservationoptimism.org/feed/', name: 'Conservation Optimism', category: 'environment', region: 'global', tier: 2, isLive: true },
   { url: 'https://ourworldindata.org/atom.xml', name: 'Our World in Data', category: 'science', region: 'global', tier: 1, isLive: true },
 
   // ─── INNOVATION & TECH ───────────────────────────────────────────────────
-  { url: 'https://techcrunch.com/feed/', name: 'TechCrunch', category: 'innovation', region: 'global', tier: 2, isLive: false },
-  { url: 'https://www.theverge.com/rss/index.xml', name: 'The Verge', category: 'innovation', region: 'global', tier: 2, isLive: false },
+  { url: 'https://dev.to/feed', name: 'Dev.to', category: 'innovation', region: 'global', tier: 1, isLive: true },
+  { url: 'https://spectrum.ieee.org/rss/fulltext', name: 'IEEE Spectrum', category: 'innovation', region: 'global', tier: 1, isLive: true },
+  { url: 'https://hnrss.org/frontpage', name: 'Hacker News', category: 'innovation', region: 'global', tier: 2, isLive: true },
+  { url: 'https://www.producthunt.com/feed', name: 'Product Hunt', category: 'innovation', region: 'global', tier: 2, isLive: true },
   { url: 'https://feeds.arstechnica.com/arstechnica/technology-lab', name: 'Ars Technica', category: 'innovation', region: 'global', tier: 2, isLive: false },
-  { url: 'https://hnrss.org/frontpage', name: 'Hacker News', category: 'innovation', region: 'global', tier: 2, isLive: false },
+  { url: 'https://www.theverge.com/rss/index.xml', name: 'The Verge', category: 'innovation', region: 'global', tier: 2, isLive: false },
 
   // ─── COMMUNITY & IMPACT ───────────────────────────────────────────────────
   { url: 'https://www.yesmagazine.org/feed', name: 'Yes! Magazine', category: 'community', region: 'global', tier: 2, isLive: true },

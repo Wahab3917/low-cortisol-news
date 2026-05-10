@@ -11,12 +11,8 @@ function storyCard(s: Story): string {
     <article class="story-card story-card--pak" data-href="${escapeAttr(s.link)}" role="button" tabindex="0" aria-label="${escapeAttr(s.title)}">
       ${s.imageUrl ? `<div class="story-image-wrap"><img src="${escapeAttr(s.imageUrl)}" loading="lazy" class="story-image" alt="" /></div>` : ''}
       <div class="story-content">
-        <div class="story-meta">
-          <span class="story-source">🇵🇰 ${escapeHtml(s.sourceName)}</span>
-          <time class="story-time">${timeAgo}</time>
-        </div>
         <h3 class="story-title">${escapeHtml(s.title)}</h3>
-        ${s.summary ? `<p class="story-summary">${escapeHtml(s.summary)}</p>` : ''}
+        <time class="story-time">${timeAgo}</time>
       </div>
     </article>`;
 }

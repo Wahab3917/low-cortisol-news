@@ -41,19 +41,36 @@
     <!-- Main Dashboard -->
     <div id="panel-live" class="panel" role="tabpanel" aria-labelledby="tab-live">
       <div class="dashboard-grid">
-        <!-- Main Content Area -->
-        <div class="dashboard-main">
+        <!-- Main News Column (Center-Left) -->
+        <main class="dashboard-main">
           <div class="panel-header">
             <h1>Low Cortisol News</h1>
             <span class="panel-subtitle">Latest highlights.</span>
           </div>
           <div id="mixed-feed-content" class="panel-content">
-            <!-- News articles (6-12) will be injected here -->
+            <!-- News articles (max 8) -->
           </div>
-        </div>
 
-        <!-- Sidebar Widgets -->
+          <!-- Remaining Area below News -->
+          <section class="dashboard-bottom-extension">
+            <div class="widget-card community-highlight">
+              <h3 class="widget-title">🌱 Growing Communities</h3>
+              <p class="mood-text">Local initiatives in renewable energy and shared gardening are seeing a 15% increase
+                this quarter.</p>
+            </div>
+          </section>
+        </main>
+
+        <!-- Features Sidebar (Right) -->
         <aside class="dashboard-sidebar">
+          <!-- Daily Brief Card -->
+          <div class="widget-card daily-brief-widget">
+            <h3 class="widget-title">📅 Daily Brief</h3>
+            <div id="daily-brief-content" class="brief-text">
+              <p>Fetching your morning briefing...</p>
+            </div>
+          </div>
+
           <!-- Mood Booster Widget -->
           <div class="widget-card mood-booster">
             <h3 class="widget-title">✨ Mood Booster</h3>
@@ -62,25 +79,22 @@
           </div>
 
           <!-- Human Progress Stats -->
-          <div class="widget-card">
+          <div class="widget-card progress-stats">
             <h3 class="widget-title">📈 Global Progress</h3>
-            <div class="stat-grid">
-              <div class="stat-item">
-                <span class="stat-value">84%</span>
-                <span class="stat-label">Literacy</span>
+            <div class="stat-item">
+              <span class="stat-label">Literacy Rate</span>
+              <div class="stat-bar">
+                <div class="stat-fill" style="width: 86%;"></div>
               </div>
-              <div class="stat-item">
-                <span class="stat-value">+12%</span>
-                <span class="stat-label">Forestry</span>
-              </div>
+              <span class="stat-value">86.7%</span>
             </div>
-          </div>
-
-          <!-- Today's Hero Placeholder -->
-          <div class="widget-card">
-            <h3 class="widget-title">🦸 Today's Hero</h3>
-            <p class="mood-text" style="font-size: 0.85rem; color: var(--text-muted);">Finding someone who made a
-              difference today... 🕵️</p>
+            <div class="stat-item">
+              <span class="stat-label">Forest Cover</span>
+              <div class="stat-bar">
+                <div class="stat-fill" style="width: 31%;"></div>
+              </div>
+              <span class="stat-value">31.2%</span>
+            </div>
           </div>
         </aside>
       </div>

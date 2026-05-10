@@ -127,6 +127,21 @@ function setupIDBPersistence(): void {
 }
 
 // ────────────────────────────────────────
+// Daily Brief Widget
+// ────────────────────────────────────────
+function setupDailyBrief(): void {
+  const container = document.getElementById('daily-brief-content');
+  if (!container) return;
+
+  const briefData = getHydratedData('brief:daily') as string | null;
+  if (briefData) {
+    container.innerHTML = briefData.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('');
+  } else {
+    container.innerHTML = '<p>No briefing available for this hour. Stay positive!</p>';
+  }
+}
+
+// ────────────────────────────────────────
 // Main init
 // ────────────────────────────────────────
 async function init(): Promise<void> {
@@ -149,6 +164,9 @@ async function init(): Promise<void> {
     livePanel.render(),
     pakPanel.render(),
   ]);
+
+  // Setup non-panel widgets
+  setupDailyBrief();
 
   // Signal initial health state
   if (liveData?.length) {

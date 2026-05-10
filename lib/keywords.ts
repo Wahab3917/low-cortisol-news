@@ -8,6 +8,8 @@ export const POSITIVE_KEYWORDS = new Set([
   'grew', 'increased access', 'free', 'open', 'affordable', 'reduced poverty',
   'vaccination', 'eradicated', 'renewable', 'solar', 'habitat', 'species',
   'children', 'education', 'school', 'scholarship', 'literacy', 'empowerment',
+  'conservation', 'sustainability', 'research', 'study', 'report', 'findings',
+  'care', 'trends', 'surveys', 'advancement',
 ]);
 
 // Words that immediately disqualify a story

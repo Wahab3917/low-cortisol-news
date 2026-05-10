@@ -16,7 +16,7 @@ export async function classifyWithLLM(
   summary: string,
   apiKey: string
 ): Promise<ClassificationResult | null> {
-  const prompt = `You are a positivity classifier for a news dashboard. Analyze this news story and respond ONLY with a JSON object, no other text.
+  const prompt = `You are a positivity classifier for a news and updates dashboard. Analyze this news story and respond ONLY with a JSON object, no other text.
 
 Headline: "${headline}"
 Summary: "${summary.slice(0, 300)}"

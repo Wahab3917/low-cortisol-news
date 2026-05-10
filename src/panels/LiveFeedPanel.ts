@@ -13,31 +13,25 @@ const DASHBOARD_SOURCES = [
 
 function storyCard(s: Story): string {
   const timeAgo = formatTimeAgo(s.pubDate);
-  const catIcon = categoryIcon(s.category);
   return `
     <article class="story-card" data-href="${escapeAttr(s.link)}" role="button" tabindex="0" aria-label="${escapeAttr(s.title)}">
       ${s.imageUrl ? `<div class="story-image-wrap"><img src="${escapeAttr(s.imageUrl)}" loading="lazy" class="story-image" alt="" /></div>` : ''}
       <div class="story-content">
-        <div class="story-meta">
-          <span class="story-source">${catIcon} ${escapeHtml(s.sourceName)}</span>
-          <time class="story-time">${timeAgo}</time>
-        </div>
         <h3 class="story-title">${escapeHtml(s.title)}</h3>
-        ${s.summary ? `<p class="story-summary">${escapeHtml(s.summary)}</p>` : ''}
+        <time class="story-time">${timeAgo}</time>
       </div>
     </article>`;
 }
 
 function loadingHtml(): string {
   return `<div class="panel-loading" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
-    ${Array(6).fill('<div class="skeleton-card"><div class="skeleton-line sk-image"></div><div class="sk-content"><div class="skeleton-line sk-title"></div><div class="skeleton-line sk-body"></div></div></div>').join('')}
+    ${Array(4).fill('<div class="skeleton-card"><div class="skeleton-line sk-image"></div><div class="sk-content"><div class="skeleton-line sk-title"></div><div class="skeleton-line sk-body"></div></div></div>').join('')}
   </div>`;
 }
 
 function emptyHtml(): string {
   return `<div class="panel-empty">
-    <span class="empty-icon">☀️</span>
-    <p>Good news is on its way — checking sources now…</p>
+    <p>Loading…</p>
   </div>`;
 }
 
@@ -77,7 +71,7 @@ export class LiveFeedPanel extends Panel {
   private async fetchFeeds(): Promise<void> {
     const toFetch = DASHBOARD_SOURCES.filter(s => !this.fetchedSources.has(s.url));
     if (toFetch.length === 0) {
-      this.fetchedSources.clear(); 
+      this.fetchedSources.clear();
       return;
     }
 
@@ -108,7 +102,7 @@ export class LiveFeedPanel extends Panel {
   private mergeStories(incoming: Story[]): void {
     const existingLinks = new Set(this.stories.map(s => s.link));
     const existingTitles = new Set(this.stories.map(s => s.title.toLowerCase().slice(0, 60)));
-    
+
     const fresh = incoming.filter(s =>
       !existingLinks.has(s.link) &&
       !existingTitles.has(s.title.toLowerCase().slice(0, 60))
@@ -120,9 +114,10 @@ export class LiveFeedPanel extends Panel {
     const yesterdayStart = todayStart - (24 * 60 * 60 * 1000);
 
     this.stories = [...fresh, ...this.stories]
+      .filter(s => !!s.imageUrl) // Eliminate news without images
       .filter(s => new Date(s.pubDate).getTime() >= yesterdayStart)
       .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
-      .slice(0, 12); // Limit to 12 as requested
+      .slice(0, 8); // Limit to 8 as requested
   }
 
   private renderStories(): void {
