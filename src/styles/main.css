@@ -5,7 +5,7 @@
   --bg: #f4f6f9;
   --bg-card: #ffffff;
   --bg-card-hover: #fcfdfe;
-  --bg-header: rgba(244, 246, 249, 0.92);
+  --bg-header: rgba(255, 255, 255, 0.4);
   --border: rgba(0, 0, 0, 0.08);
   --text: #1a2030;
   --text-muted: #586070;
@@ -38,7 +38,12 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: var(--bg);
+  background:
+    linear-gradient(rgba(244, 246, 249, 0.88), rgba(244, 246, 249, 0.88)),
+    url('/src/assets/newspaper-texture.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
   color: var(--text);
   min-height: 100vh;
   display: flex;
@@ -57,9 +62,10 @@ body {
   padding: 0 24px;
   height: 60px;
   background: var(--bg-header);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
 }
 
 .logo {
@@ -535,6 +541,7 @@ body {
 .stat-item {
   margin-bottom: 16px;
 }
+
 .stat-label {
   display: block;
   font-size: 0.75rem;
@@ -543,6 +550,7 @@ body {
   color: var(--text-muted);
   margin-bottom: 4px;
 }
+
 .stat-bar {
   height: 8px;
   background: #eee;
@@ -550,11 +558,13 @@ body {
   overflow: hidden;
   margin-bottom: 4px;
 }
+
 .stat-fill {
   height: 100%;
   background: var(--accent);
   border-radius: 4px;
 }
+
 .stat-value {
   font-size: 0.85rem;
   font-weight: 600;
@@ -566,6 +576,7 @@ body {
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
+
   .dashboard-sidebar {
     position: static;
   }

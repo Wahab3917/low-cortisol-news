@@ -29,9 +29,13 @@ function loadingHtml(): string {
   </div>`;
 }
 
-function emptyHtml(): string {
+function emptyHtml(category?: string): string {
+  const msg = category && category !== 'all' 
+    ? `No latest news for "${category.charAt(0).toUpperCase() + category.slice(1)}", yet.` 
+    : 'No news matches your filters right now.';
+    
   return `<div class="panel-empty">
-    <p>Loading…</p>
+    <p>${msg}</p>
   </div>`;
 }
 
@@ -129,7 +133,10 @@ export class LiveFeedPanel extends Panel {
     }
 
     if (filtered.length === 0) {
-      this.setContent(emptyHtml());
+      this.setContent(emptyHtml(this.activeCategory));
+      // Hide "More" button if no stories
+      const moreBtn = document.getElementById('show-more-news');
+      if (moreBtn) moreBtn.style.display = 'none';
       return;
     }
 
