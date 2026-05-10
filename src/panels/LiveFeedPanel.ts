@@ -43,7 +43,7 @@ export class LiveFeedPanel extends Panel {
   constructor(containerId: string, hydratedData?: Story[]) {
     super(containerId);
     if (hydratedData?.length) {
-      this.stories = hydratedData;
+      this.stories = hydratedData.slice(0, 8);
     }
     this.poller = new SmartPollLoop({
       intervalMs: 5 * 60 * 1000, // 5 minutes

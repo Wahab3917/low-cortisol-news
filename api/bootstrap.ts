@@ -37,8 +37,11 @@ export default async function handler(req: Request): Promise<Response> {
       const val = results[i];
       if (val && val !== '__NEG__') {
         try {
-          payload[key] = typeof val === 'string' ? JSON.parse(val) : val;
-        } catch { /* skip malformed */ }
+          const parsed = typeof val === 'string' ? JSON.parse(val) : val;
+          payload[key] = Array.isArray(parsed) ? parsed.slice(0, 8) : parsed;
+        } catch {
+          payload[key] = val; // Use plain string if not JSON
+        }
       }
     });
 
