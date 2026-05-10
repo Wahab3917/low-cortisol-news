@@ -1,7 +1,5 @@
 import { LiveFeedPanel } from './panels/LiveFeedPanel';
 import { PakistanPanel } from './panels/PakistanPanel';
-import { SciencePanel } from './panels/SciencePanel';
-import { DailyBriefPanel } from './panels/DailyBriefPanel';
 import { appBus } from './core/EventBus';
 import type { BootstrapPayload, Story } from '../lib/types';
 
