@@ -7,7 +7,7 @@ export abstract class Panel {
     this.container = document.getElementById(containerId)!;
     this.content = this.container.querySelector('.panel-content')!;
     // Event delegation — bind to stable container, never to inner elements
-    this.content.addEventListener('click', (e) => this.handleClick(e));
+    this.container.addEventListener('click', (e) => this.handleClick(e));
   }
 
   protected setContent(html: string): void {
