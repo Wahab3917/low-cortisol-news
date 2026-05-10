@@ -559,62 +559,8 @@ body {
   text-transform: uppercase;
 }
 
-/* ---------- Daily brief ---------- */
-.brief-container {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  text-align: center;
-}
-
-.brief-icon {
-  font-size: 2.5rem;
-  animation: sunpulse 4s ease-in-out infinite;
-}
-
-.brief-text {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: var(--text);
-  font-style: italic;
-  max-width: 640px;
-  border: none;
-  padding: 0;
-  quotes: "\u201c" "\u201d";
-}
-
-.brief-text::before {
-  content: open-quote;
-  color: var(--accent);
-  font-size: 1.5em;
-}
-
-.brief-text::after {
-  content: close-quote;
-  color: var(--accent);
-  font-size: 1.5em;
-}
-
-.brief-footer {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 0.78rem;
-  color: var(--text-faint);
-}
-
-.brief-refresh {
-  margin-top: 8px;
-  padding: 8px 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text-muted);
+/* ---------- Stats ---------- */
+.stat-grid {
   font-family: var(--font-sans);
   font-size: 0.85rem;
   cursor: pointer;

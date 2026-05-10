@@ -151,12 +151,12 @@ function escapeHtml(s: string): string {
 function escapeAttr(s: string): string {
   return s.replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
-function categoryIcon(cat: Story['category']): string {
-  const map: Record<string, string> = {
-    science: '🔬', environment: '🌿', community: '🤝', innovation: '💡', general: '🌍'
-  };
-  return map[cat] ?? '🌍';
-}
+// function categoryIcon(cat: Story['category']): string {
+//   const map: Record<string, string> = {
+//     science: '🔬', environment: '🌿', community: '🤝', innovation: '💡', general: '🌍'
+//   };
+//   return map[cat] ?? '🌍';
+// }
 function formatTimeAgo(dateStr: string): string {
   if (!dateStr) return '';
   try {
