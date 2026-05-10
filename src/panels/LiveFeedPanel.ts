@@ -39,6 +39,8 @@ export class LiveFeedPanel extends Panel {
   private stories: Story[] = [];
   private poller: SmartPollLoop;
   private fetchedSources = new Set<string>();
+  private activeCategory: string = 'all';
+  private displayLimit: number = 8;
 
   constructor(containerId: string, hydratedData?: Story[]) {
     super(containerId);
@@ -121,16 +123,51 @@ export class LiveFeedPanel extends Panel {
   }
 
   private renderStories(): void {
-    if (this.stories.length === 0) {
+    let filtered = this.stories;
+    if (this.activeCategory !== 'all') {
+      filtered = this.stories.filter(s => s.category === this.activeCategory);
+    }
+
+    if (filtered.length === 0) {
       this.setContent(emptyHtml());
       return;
     }
-    this.setContent(`<div class="story-list" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">${this.stories.map(storyCard).join('')}</div>`);
+
+    const display = filtered.slice(0, this.displayLimit);
+    this.setContent(`<div class="story-list" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">${display.map(storyCard).join('')}</div>`);
+
+    // Toggle "More" button visibility
+    const moreBtn = document.getElementById('show-more-news');
+    if (moreBtn) {
+      moreBtn.style.display = filtered.length > this.displayLimit ? 'block' : 'none';
+    }
   }
 
   // Event delegation — never attach listeners inside innerHTML
   protected handleClick(e: MouseEvent): void {
-    const card = (e.target as Element).closest('.story-card');
+    const target = e.target as HTMLElement;
+
+    // Show more button
+    if (target.id === 'show-more-news') {
+      this.displayLimit += 8;
+      this.renderStories();
+      return;
+    }
+
+    // Category tabs
+    const catBtn = target.closest('.cat-tab') as HTMLElement;
+    if (catBtn) {
+      const cat = catBtn.dataset.cat!;
+      this.activeCategory = cat;
+      this.displayLimit = 8; // Reset limit on category change
+
+      // Update UI classes
+      document.querySelectorAll('.cat-tab').forEach(b => b.classList.toggle('active', (b as HTMLElement).dataset.cat === cat));
+      this.renderStories();
+      return;
+    }
+
+    const card = target.closest('.story-card');
     if (card) {
       const href = (card as HTMLElement).dataset.href;
       if (href) window.open(href, '_blank', 'noopener,noreferrer');
