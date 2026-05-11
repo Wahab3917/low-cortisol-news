@@ -12,7 +12,11 @@ function storyCard(s: Story): string {
       ${s.imageUrl ? `<div class="story-image-wrap"><img src="${escapeAttr(s.imageUrl)}" loading="lazy" class="story-image" alt="" /></div>` : ''}
       <div class="story-content">
         <h3 class="story-title">${escapeHtml(s.title)}</h3>
-        <time class="story-time">${timeAgo}</time>
+        <div class="story-meta">
+          <span class="story-source">${escapeHtml(s.sourceName || 'Pakistan Update')}</span>
+          <span class="story-meta-sep">•</span>
+          <time class="story-time">${timeAgo}</time>
+        </div>
       </div>
     </article>`;
 }
@@ -25,7 +29,10 @@ export class PakistanPanel extends Panel {
     super(containerId);
     // Accept both "pakistan"-region data from bootstrap AND filter from global if needed
     if (hydratedData?.length) {
-      this.stories = hydratedData.filter(s => s.region === 'pakistan' || s.isPakistan);
+      this.stories = hydratedData
+        .filter(s => !!s.imageUrl) // Prevent ghosting
+        .filter(s => s.region === 'pakistan' || s.isPakistan)
+        .slice(0, 12);
     }
     this.poller = new SmartPollLoop({
       intervalMs: 7 * 60 * 1000, // 7 minutes — slightly staggered from LiveFeed

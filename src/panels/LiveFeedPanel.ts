@@ -18,7 +18,11 @@ function storyCard(s: Story): string {
       ${s.imageUrl ? `<div class="story-image-wrap"><img src="${escapeAttr(s.imageUrl)}" loading="lazy" class="story-image" alt="" /></div>` : ''}
       <div class="story-content">
         <h3 class="story-title">${escapeHtml(s.title)}</h3>
-        <time class="story-time">${timeAgo}</time>
+        <div class="story-meta">
+          <span class="story-source">${escapeHtml(s.sourceName || 'Positive News')}</span>
+          <span class="story-meta-sep">•</span>
+          <time class="story-time">${timeAgo}</time>
+        </div>
       </div>
     </article>`;
 }
@@ -30,10 +34,10 @@ function loadingHtml(): string {
 }
 
 function emptyHtml(category?: string): string {
-  const msg = category && category !== 'all' 
-    ? `No latest news for "${category.charAt(0).toUpperCase() + category.slice(1)}", yet.` 
+  const msg = category && category !== 'all'
+    ? `No latest news for "${category.charAt(0).toUpperCase() + category.slice(1)}", yet.`
     : 'No news matches your filters right now.';
-    
+
   return `<div class="panel-empty">
     <p>${msg}</p>
   </div>`;
@@ -45,11 +49,13 @@ export class LiveFeedPanel extends Panel {
   private fetchedSources = new Set<string>();
   private activeCategory: string = 'all';
   private displayLimit: number = 8;
+  private isFetching: boolean = false;
 
   constructor(containerId: string, hydratedData?: Story[]) {
     super(containerId);
     if (hydratedData?.length) {
-      this.stories = hydratedData.slice(0, 8);
+      // Strict filter for images immediately to prevent ghosting
+      this.stories = hydratedData.filter(s => !!s.imageUrl).slice(0, 8);
     }
     this.poller = new SmartPollLoop({
       intervalMs: 5 * 60 * 1000, // 5 minutes
@@ -75,33 +81,44 @@ export class LiveFeedPanel extends Panel {
   }
 
   private async fetchFeeds(): Promise<void> {
+    if (this.isFetching) return;
+
     const toFetch = DASHBOARD_SOURCES.filter(s => !this.fetchedSources.has(s.url));
     if (toFetch.length === 0) {
-      this.fetchedSources.clear();
+      this.fetchedSources.clear(); // Rotate sources
       return;
     }
 
-    // Fetch 3 sources at a time to avoid hammering
-    const batch = toFetch.slice(0, 3);
-    const results = await Promise.allSettled(batch.map(src =>
-      fetch(`/api/feed?url=${encodeURIComponent(src.url)}&name=${encodeURIComponent(src.name)}&region=${src.region}&category=${src.category}`)
-        .then(r => r.json() as Promise<Story[]>)
-    ));
+    this.isFetching = true;
+    this.updateTabsLoadingState(true);
 
-    let gotNew = false;
-    for (let i = 0; i < results.length; i++) {
-      const r = results[i];
-      if (r.status === 'fulfilled' && Array.isArray(r.value) && r.value.length > 0) {
-        this.mergeStories(r.value);
-        gotNew = true;
+    try {
+      // Fetch in batches of 5 to avoid browser request limits but stay fast
+      for (let i = 0; i < toFetch.length; i += 5) {
+        const batch = toFetch.slice(i, i + 5);
+        const results = await Promise.allSettled(batch.map(src =>
+          fetch(`/api/feed?url=${encodeURIComponent(src.url)}&name=${encodeURIComponent(src.name)}&region=${src.region}&category=${src.category}`)
+            .then(r => r.json() as Promise<Story[]>)
+        ));
+
+        let gotNew = false;
+        results.forEach((r, idx) => {
+          if (r.status === 'fulfilled' && Array.isArray(r.value) && r.value.length > 0) {
+            this.mergeStories(r.value);
+            gotNew = true;
+          }
+          this.fetchedSources.add(batch[idx].url);
+        });
+
+        if (gotNew) this.renderStories();
       }
-      this.fetchedSources.add(batch[i].url);
-    }
 
-    if (gotNew) {
-      this.renderStories();
-      appBus.emit('feed:updated', { key: 'feed:positive:global', count: this.stories.length });
-      appBus.emit('health:change', { status: 'ok', message: `${this.stories.length} stories loaded` });
+      appBus.emit('health:change', { status: 'ok', message: `${this.stories.length} stories active` });
+    } catch (err) {
+      console.error('Fetch error:', err);
+    } finally {
+      this.isFetching = false;
+      this.updateTabsLoadingState(false);
     }
   }
 
@@ -164,6 +181,7 @@ export class LiveFeedPanel extends Panel {
     // Category tabs
     const catBtn = target.closest('.cat-tab') as HTMLElement;
     if (catBtn) {
+      if (this.isFetching) return; // Prevent switching while loading fresh data
       const cat = catBtn.dataset.cat!;
       this.activeCategory = cat;
       this.displayLimit = 8; // Reset limit on category change
@@ -181,6 +199,13 @@ export class LiveFeedPanel extends Panel {
     }
   }
 
+  private updateTabsLoadingState(loading: boolean): void {
+    const container = document.querySelector('.category-tabs');
+    if (container) {
+      container.classList.toggle('is-loading', loading);
+    }
+  }
+
   destroy(): void {
     super.destroy();
     this.poller.stop();
@@ -192,15 +217,18 @@ export class LiveFeedPanel extends Panel {
 function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
+
 function escapeAttr(s: string): string {
   return s.replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
+
 // function categoryIcon(cat: Story['category']): string {
 //   const map: Record<string, string> = {
 //     science: '🔬', environment: '🌿', community: '🤝', innovation: '💡', general: '🌍'
 //   };
 //   return map[cat] ?? '🌍';
 // }
+
 function formatTimeAgo(dateStr: string): string {
   if (!dateStr) return '';
   try {
